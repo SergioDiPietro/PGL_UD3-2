@@ -2,10 +2,16 @@ import { StyleSheet, View, Text } from 'react-native';
 import Colors from '../constants/Colors';
 
 export const BalanceDisplay = ({ amount, currency }) => {
+    let amountStyle;
+
+    amount < 0 ? 
+    amountStyle = styles.negativeAmount : 
+    amountStyle = styles.positiveAmount
+
     return (
-        <View style={styles.container}>
+        <View style={styles.balanceContainer}>
             <View style={styles.display}>
-                <Text style={styles.amount}>{amount}</Text>
+                <Text style={amountStyle}>{amount}</Text>
                 <Text style={styles.currency}>{currency}</Text>
             </View>
         </View>
@@ -13,10 +19,12 @@ export const BalanceDisplay = ({ amount, currency }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    balanceContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderRadius: 10,
+        width: '95%'
     }, 
     display: {
         width: 130,
@@ -27,8 +35,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    amount: {
+    positiveAmount: {
         color: Colors.positive,
+        fontSize: 45
+    },
+    negativeAmount: {
+        color: Colors.negative,
         fontSize: 45
     },
     currency: {
