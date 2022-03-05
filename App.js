@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, TouchableOpacity, Text } from 'react-native';
 import Colors from './constants/Colors';
 import { BalanceDisplay } from './components/BalanceDisplay';
 import { TransactionCard } from './components/TransactionCard';
@@ -20,6 +20,9 @@ export default function App() {
                     />
                 )} />
             </View>
+            <TouchableOpacity style={styles.addButton}>
+                <Text style={styles.addIcon}>+</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -46,7 +49,21 @@ const styles = StyleSheet.create({
     }, 
     list: {
         flex: 1,
-        margin: 15, 
-        backgroundColor: 'teal'
+        margin: 15
+    },
+    addButton: {
+        width: 60,  
+        height: 60,   
+        borderRadius: 30,            
+        backgroundColor: Colors.secondary,                                    
+        position: 'absolute',                                          
+        bottom: 20,                                                    
+        right: 20, 
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }, 
+    addIcon: {
+        fontSize: 30
     }
 });
