@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 10,
-        width: '95%'
+        borderRadius: 10
     }, 
     display: {
         width: 130,
