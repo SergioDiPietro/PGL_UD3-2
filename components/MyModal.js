@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Button, TextInput, View, StyleSheet, Modal, Text } from "react-native";
 import Colors from "../constants/Colors";
 
-export const MyModal = ({ onSave, setModalVisible, modalVisible, currency, title, values }) => {
-    const [description, setDescription] = useState(values.description);
-    const [amount, setAmount] = useState((values.amount).toString());
-    const [date, setDate] = useState(values.date);
+export const MyModal = ({ onSave, setModalVisible, modalVisible, currency, title, item }) => {
+    const [description, setDescription] = useState(item.value.description);
+    const [amount, setAmount] = useState((item.value.amount).toString());
+    const [date, setDate] = useState(item.value.date);
 
     const descriptionHandler = (text) => {
         setDescription(text);
@@ -27,7 +27,9 @@ export const MyModal = ({ onSave, setModalVisible, modalVisible, currency, title
     };
 
     const validateTransaction = () => {
-        onSave({ description, amount: parseFloat(amount), date });
+        var key = item.key;
+        if (key === null) key = Math.random().toString();
+        onSave({ key, value:{ description, amount: parseFloat(amount), date }});
         resetAndCloseModal();
     };
 

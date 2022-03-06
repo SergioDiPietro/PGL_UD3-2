@@ -11,11 +11,24 @@ export default function App() {
     const [addModalVisible, setAddModalVisible] = useState(false);
     const currency = "€";
 
-    const addTransaction = (value) => {
-        if (value.amount !== 0) {
-            setTransactionList((currentList) => [...currentList, { key: Math.random().toString(), value }]);
-            setBudget(budget + value.amount);
+    const addTransaction = (item) => {
+        if (item.value.amount !== 0) {
+            setTransactionList((currentList) => [...currentList, item]);
+            setBudget(budget + item.value.amount);
         };
+    };
+
+    const modifyTransaction = (item) => {
+        let newList = [...transactionList];
+
+        let transactionPosition;
+        newList.forEach((e, index) => {
+            if (e.key === item.key) transactionPosition = index;
+        });
+
+        setBudget((budget - newList[transactionPosition].value.amount) + item.value.amount);
+        newList[transactionPosition] = item;
+        setTransactionList(newList);
     };
 
     const confirmDelete = (item) => {
@@ -43,7 +56,7 @@ export default function App() {
                 onSave={addTransaction}
                 currency={currency}
                 title={"Nuevo movimiento"}
-                values={{description: "", amount: "", date: ""}}
+                item={{key: null, value:{description: "", amount: "", date: ""}}}
             />
     } else addModal = null
 
@@ -55,9 +68,10 @@ export default function App() {
             <View style={styles.transactionListContainer}>
                 <FlatList style={styles.list} data={transactionList} renderItem={(itemList) => (
                     <TransactionCard
-                        values={itemList.item.value}
+                        item={itemList.item}
                         currency={currency}
                         confirmDelete={() => confirmDelete(itemList.item)}
+                        modifyTransaction={modifyTransaction}
                     />
                 )} />
             </View>

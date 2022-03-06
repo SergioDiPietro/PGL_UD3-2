@@ -4,11 +4,11 @@ import Colors from '../constants/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { MyModal } from './MyModal';
 
-export const TransactionCard = ({ values, currency, confirmDelete }) => {
+export const TransactionCard = ({ item, currency, confirmDelete, modifyTransaction }) => {
     const [editModalVisible, setEditModalVisible] = useState(false);
-    const description = values.description;
-    const amount = values.amount;
-    const date = values.date;
+    const description = item.value.description;
+    const amount = item.value.amount;
+    const date = item.value.date;
 
     let symbol;
     if (amount > 0) symbol = "+";
@@ -27,10 +27,10 @@ export const TransactionCard = ({ values, currency, confirmDelete }) => {
             <MyModal 
                 setModalVisible={setEditModalVisible}
                 modalVisible={editModalVisible}
-                onSave={() => console.log('Editado')}
+                onSave={modifyTransaction}
                 currency={currency}
                 title={"Editar movimiento"}
-                values={values}
+                item={item}
             />
     }
 
