@@ -3,27 +3,51 @@ import { StyleSheet, View, FlatList, TouchableOpacity, Text } from 'react-native
 import Colors from './constants/Colors';
 import { BalanceDisplay } from './components/BalanceDisplay';
 import { TransactionCard } from './components/TransactionCard';
+import { AddModal } from './components/AddModal';
 
 export default function App() {
     const [amount, setAmount] = useState(0);
     const [transactionList, setTransactionList] = useState([]);
     const [addModalVisible, setAddModalVisible] = useState(false);
+    const currency = "€";
+
+    const onAddTransaction = (value) => {
+        if (value.amount !== 0) {
+            setTransactionList((currentList) => [...currentList, {key: Math.random().toString(), value}]);
+            setAmount(amount + value.amount);
+        };
+    };
+
+    let addModal = null;
+
+    if (addModalVisible) {
+        addModal =
+            <AddModal 
+                setAddModalVisible={setAddModalVisible}
+                addModalVisible={addModalVisible}
+                onAddTransaction={onAddTransaction} 
+                currency={currency}
+            />
+    } else addModal = null
 
     return (
         <View style={styles.mainContainer}>
             <View style={styles.balanceContainer}>
-                <BalanceDisplay amount={amount} currency={"EUR"} />
+                <BalanceDisplay amount={amount} currency={currency} />
             </View>
             <View style={styles.transactionListContainer}>
-                <FlatList style={styles.list} data={transactionList} renderItem={itemList => (
+                <FlatList style={styles.list} data={transactionList} renderItem={(itemList) => (
                     <TransactionCard
                         item={itemList.item}
+                        currency={currency}
                     />
                 )} />
             </View>
             <TouchableOpacity style={styles.addButton} onPress={() => setAddModalVisible(true)}>
                 <Text style={styles.addIcon}>+</Text>
             </TouchableOpacity>
+
+            {addModal}
         </View>
     );
 }
@@ -46,7 +70,8 @@ const styles = StyleSheet.create({
         flex: 4,
         backgroundColor: Colors.primary,
         borderRadius: 10,
-        width: '95%'
+        width: '95%',
+        paddingBottom: 20
     }, 
     list: {
         flex: 1,

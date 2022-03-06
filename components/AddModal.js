@@ -2,26 +2,26 @@ import { useState } from "react";
 import { Button, TextInput, View, StyleSheet, Modal, Text } from "react-native";
 import Colors from "../constants/Colors";
 
-export const AddBookModal = ({ onAddTransaction, setAddModalVisible, addModalVisible }) => {
-    const [description, setDescription] = useState("");
-    const [amount, setAmount] = useState("");
+export const AddModal = ({ onAddTransaction, setAddModalVisible, addModalVisible, currency }) => {
+    const [description, setDescription] = useState();
+    const [amount, setAmount] = useState();
 
     const descriptionHandler = (text) => {
         setDescription(text);
     };
 
-    const amountHandler = (number) => {
-        setAmount(number);
+    const amountHandler = (amount) => {
+        setAmount(amount);
     };
 
     const resetAndCloseModal = () => {
-        setDescription("");
-        setAmount("");
+        setDescription();
+        setAmount();
         setAddModalVisible(false);
     }
 
     const validateTransaction = () => {
-        onAddTransaction({ description, amount: parseInt(amount) });
+        onAddTransaction({ description, amount: parseFloat(amount) });
         resetAndCloseModal();
     };
 
@@ -29,18 +29,21 @@ export const AddBookModal = ({ onAddTransaction, setAddModalVisible, addModalVis
         <Modal visible={addModalVisible} animationType={'fade'} transparent={true}>
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Agregar libro</Text>
+                    <Text style={styles.modalTitle}>Nuevo movimiento</Text>
                     <TextInput
                         style={styles.description}
                         placeholder="Descripción"
-                        value={title}
+                        placeholderTextColor={Colors.accent3}
+                        value={description}
                         onChangeText={descriptionHandler}
-                        maxLength={100}
+                        maxLength={30}
+                        multiline={true}
                     />
                     <TextInput
                         style={styles.amount}
-                        placeholder="Cantidad"
-                        value={amount.toString()}
+                        placeholder={"Cantidad (" + currency + ")"}
+                        placeholderTextColor={Colors.accent3}
+                        value={amount}
                         keyboardType={'numeric'}
                         onChangeText={amountHandler}
                     />
@@ -50,14 +53,14 @@ export const AddBookModal = ({ onAddTransaction, setAddModalVisible, addModalVis
                             <Button
                                 title="Cancelar"
                                 color={Colors.accent2}
-                                onPress={resetAndCloseModal}
+                                onPress={() => resetAndCloseModal()}
                             />
                         </View>
                         <View style={styles.button}>
                             <Button
                                 title="Guardar"
                                 color={Colors.accent2}
-                                onPress={validateTransaction}
+                                onPress={() => validateTransaction()}
                             />
                         </View>
                     </View>
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
         marginVertical: '50%',
         marginHorizontal: '10%',
         backgroundColor: Colors.primary,
-        borderRadius: 20,
+        borderRadius: 10,
         padding: 20,
         alignItems: "center",
     },
@@ -90,18 +93,23 @@ const styles = StyleSheet.create({
     },
     description: {
         width: 200,
-        height: 200,
+        height: 60,
         margin: 5,
         textAlign: "center",
-        borderRadius: 10,
-        backgroundColor: Colors.accent1
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        borderRadius: 5,
+        backgroundColor: Colors.accent2,
+        color: Colors.accent1,
     },
     amount: {
-        width: 200,
+        width: 100,
+        height: 40,
         margin: 5,
         textAlign: "center",
-        borderRadius: 10,
-        backgroundColor: Colors.accent1
+        borderRadius: 5,
+        backgroundColor: Colors.accent2,
+        color: Colors.accent1,
     },
     buttonsContainer: {
         width:'100%',

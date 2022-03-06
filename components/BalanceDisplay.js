@@ -12,7 +12,7 @@ export const BalanceDisplay = ({ amount, currency }) => {
         <View style={styles.balanceContainer}>
             <View style={styles.display}>
                 <Text style={amountStyle}>{amount}</Text>
-                <Text style={styles.currency}>{currency}</Text>
+                <Text style={styles.currency}>{"\n"}{currency}</Text>
             </View>
         </View>
     )
@@ -36,16 +36,17 @@ const styles = StyleSheet.create({
     },
     positiveAmount: {
         color: Colors.positive,
-        fontSize: 45
+        fontSize: 35
     },
     negativeAmount: {
         color: Colors.negative,
-        fontSize: 45
+        fontSize: 35
     },
     currency: {
         color: Colors.secondary,
         fontSize: 15,
-        marginLeft: 5
+        marginLeft: 5,
+        fontWeight: 'bold'
     },
 });
 

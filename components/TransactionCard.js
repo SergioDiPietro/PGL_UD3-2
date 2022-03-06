@@ -1,30 +1,79 @@
-import { View, StyleSheet, Text} from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
+import Colors from '../constants/Colors';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-export const TransactionCard = ({item}) => {
-  return (
-    <View style={styles.container}>
-        <View style={styles.icon}></View>
-        <View style={styles.description}>
-            <Text>{item.value.description}</Text>
+export const TransactionCard = ({ item, currency }) => {
+    const description = item.value.description;
+    const amount = item.value.amount;
+
+    let symbol;
+    if (item.value.amount > 0) symbol = "+";
+
+    let amountText = styles.positiveAmount;
+    let icon = <Icon name='rightcircle' style={styles.iconStyle}/>;
+    
+    if (amount < 0) {
+        amountText = styles.negativeAmount;
+        icon = <Icon name='leftcircle' style={styles.iconStyle}/>;
+    }
+    
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.icon}>
+                {icon}
+            </View>
+            <View style={styles.description}>
+                <Text style={styles.descriptionText}>{description}</Text>
+            </View>
+            <View style={styles.amount}>
+                <Text style={amountText}>{symbol}{amount}{currency}</Text>
+            </View>
         </View>
-        <View style={styles.amount}>{item.value.amount}</View>
-    </View>
-  )
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         width: '100%',
-        marginBottom: 10
+        height: 50,
+        marginBottom: 20
     },
     icon: {
-        flex: 1
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     description: {
-        flex: 7
+        flex: 11,
+        alignItems: 'center',
+        paddingHorizontal: 10,
+        flexDirection: 'row',
     },
     amount: {
-        flex: 2
+        flex: 4,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        paddingHorizontal: 10
+    },
+    descriptionText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: Colors.secondary
+    },
+    positiveAmount: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: Colors.positive
+    },
+    negativeAmount: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: Colors.negative
+    },
+    iconStyle: {
+        color: Colors.secondary,
+        fontSize: 30
     }
 });
