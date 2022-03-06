@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, TouchableOpacity, Text, Alert } from 'react
 import Colors from './constants/Colors';
 import { BalanceDisplay } from './components/BalanceDisplay';
 import { TransactionCard } from './components/TransactionCard';
-import { AddModal } from './components/AddModal';
+import { MyModal } from './components/MyModal';
 
 export default function App() {
     const [budget, setBudget] = useState(0);
@@ -11,7 +11,7 @@ export default function App() {
     const [addModalVisible, setAddModalVisible] = useState(false);
     const currency = "€";
 
-    const onAddTransaction = (value) => {
+    const addTransaction = (value) => {
         if (value.amount !== 0) {
             setTransactionList((currentList) => [...currentList, { key: Math.random().toString(), value }]);
             setBudget(budget + value.amount);
@@ -23,24 +23,27 @@ export default function App() {
             "¿Eliminar este movimiento?", "",
             [
                 { text: "Cancelar" },
-                { text: "Confirmar", onPress: () => deleteTransaction(item.key) }
+                { text: "Confirmar", onPress: () => deleteTransaction(item.key, item.value.amount) }
             ]
         );
     };
 
-    const deleteTransaction = (key) => {
+    const deleteTransaction = (key, amount) => {
         setTransactionList((transactionList) => transactionList.filter((transaction) => transaction.key !== key));
+        setBudget(budget - amount);
     };
 
     let addModal = null;
 
     if (addModalVisible) {
         addModal =
-            <AddModal
-                setAddModalVisible={setAddModalVisible}
-                addModalVisible={addModalVisible}
-                onAddTransaction={onAddTransaction}
+            <MyModal
+                setModalVisible={setAddModalVisible}
+                modalVisible={addModalVisible}
+                onSave={addTransaction}
                 currency={currency}
+                title={"Nuevo movimiento"}
+                values={{description: "", amount: "", date: ""}}
             />
     } else addModal = null
 
@@ -52,7 +55,7 @@ export default function App() {
             <View style={styles.transactionListContainer}>
                 <FlatList style={styles.list} data={transactionList} renderItem={(itemList) => (
                     <TransactionCard
-                        item={itemList.item}
+                        values={itemList.item.value}
                         currency={currency}
                         confirmDelete={() => confirmDelete(itemList.item)}
                     />

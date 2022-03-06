@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Button, TextInput, View, StyleSheet, Modal, Text } from "react-native";
 import Colors from "../constants/Colors";
 
-export const AddModal = ({ onAddTransaction, setAddModalVisible, addModalVisible, currency }) => {
-    const [description, setDescription] = useState();
-    const [amount, setAmount] = useState();
-    const [date, setDate] = useState();
+export const MyModal = ({ onSave, setModalVisible, modalVisible, currency, title, values }) => {
+    const [description, setDescription] = useState(values.description);
+    const [amount, setAmount] = useState((values.amount).toString());
+    const [date, setDate] = useState(values.date);
 
     const descriptionHandler = (text) => {
         setDescription(text);
@@ -23,19 +23,19 @@ export const AddModal = ({ onAddTransaction, setAddModalVisible, addModalVisible
         setDescription();
         setAmount();
         setDate();
-        setAddModalVisible(false);
+        setModalVisible(false);
     };
 
     const validateTransaction = () => {
-        onAddTransaction({ description, amount: parseFloat(amount), date });
+        onSave({ description, amount: parseFloat(amount), date });
         resetAndCloseModal();
     };
 
     return (
-        <Modal visible={addModalVisible} animationType={'fade'} transparent={true}>
+        <Modal visible={modalVisible} animationType={'fade'} transparent={true}>
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Nuevo movimiento</Text>
+                    <Text style={styles.modalTitle}>{title}</Text>
                     <TextInput
                         style={styles.description}
                         placeholder="Descripción"
