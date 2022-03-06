@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 export const TransactionCard = ({ item, currency }) => {
     const description = item.value.description;
     const amount = item.value.amount;
+    const date = item.value.date;
 
     let symbol;
     if (item.value.amount > 0) symbol = "+";
@@ -26,8 +27,9 @@ export const TransactionCard = ({ item, currency }) => {
             <View style={styles.description}>
                 <Text style={styles.descriptionText}>{description}</Text>
             </View>
-            <View style={styles.amount}>
+            <View style={styles.amountAndDate}>
                 <Text style={amountText}>{symbol}{amount}{currency}</Text>
+                <Text style={styles.dateText}>{date}</Text>
             </View>
         </View>
     )
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         flexDirection: 'row',
     },
-    amount: {
+    amountAndDate: {
         flex: 4,
         justifyContent: 'center',
         alignItems: 'flex-end',
@@ -71,6 +73,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         color: Colors.negative
+    },
+    dateText: {
+        fontSize: 12,
+        color: Colors.secondary
     },
     iconStyle: {
         color: Colors.secondary,

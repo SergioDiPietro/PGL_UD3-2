@@ -6,7 +6,7 @@ import { TransactionCard } from './components/TransactionCard';
 import { AddModal } from './components/AddModal';
 
 export default function App() {
-    const [amount, setAmount] = useState(0);
+    const [budget, setBudget] = useState(0);
     const [transactionList, setTransactionList] = useState([]);
     const [addModalVisible, setAddModalVisible] = useState(false);
     const currency = "€";
@@ -14,7 +14,7 @@ export default function App() {
     const onAddTransaction = (value) => {
         if (value.amount !== 0) {
             setTransactionList((currentList) => [...currentList, {key: Math.random().toString(), value}]);
-            setAmount(amount + value.amount);
+            setBudget(budget + value.amount);
         };
     };
 
@@ -33,7 +33,7 @@ export default function App() {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.balanceContainer}>
-                <BalanceDisplay amount={amount} currency={currency} />
+                <BalanceDisplay budget={budget} currency={currency} />
             </View>
             <View style={styles.transactionListContainer}>
                 <FlatList style={styles.list} data={transactionList} renderItem={(itemList) => (

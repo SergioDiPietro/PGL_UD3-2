@@ -5,6 +5,7 @@ import Colors from "../constants/Colors";
 export const AddModal = ({ onAddTransaction, setAddModalVisible, addModalVisible, currency }) => {
     const [description, setDescription] = useState();
     const [amount, setAmount] = useState();
+    const [date, setDate] = useState();
 
     const descriptionHandler = (text) => {
         setDescription(text);
@@ -14,14 +15,19 @@ export const AddModal = ({ onAddTransaction, setAddModalVisible, addModalVisible
         setAmount(amount);
     };
 
+    const dateHandler = (text) => {
+        setDate(text);
+    };
+
     const resetAndCloseModal = () => {
         setDescription();
         setAmount();
+        setDate();
         setAddModalVisible(false);
-    }
+    };
 
     const validateTransaction = () => {
-        onAddTransaction({ description, amount: parseFloat(amount) });
+        onAddTransaction({ description, amount: parseFloat(amount), date });
         resetAndCloseModal();
     };
 
@@ -39,27 +45,37 @@ export const AddModal = ({ onAddTransaction, setAddModalVisible, addModalVisible
                         maxLength={30}
                         multiline={true}
                     />
-                    <TextInput
-                        style={styles.amount}
-                        placeholder={"Cantidad (" + currency + ")"}
-                        placeholderTextColor={Colors.accent3}
-                        value={amount}
-                        keyboardType={'numeric'}
-                        onChangeText={amountHandler}
-                    />
+                    <View style={{flexDirection: 'row'}}>
+                        <TextInput
+                            style={styles.amount}
+                            placeholder={"Cantidad (" + currency + ")"}
+                            placeholderTextColor={Colors.accent3}
+                            value={amount}
+                            keyboardType={'numeric'}
+                            onChangeText={amountHandler}
+                        />
+                        <TextInput
+                            style={styles.date}
+                            placeholder="Fecha"
+                            placeholderTextColor={Colors.accent3}
+                            value={date}
+                            onChangeText={dateHandler}
+                            maxLength={10}
+                        />
+                    </View>
 
                     <View style={styles.buttonsContainer}>
                         <View style={styles.button}>
                             <Button
                                 title="Cancelar"
-                                color={Colors.accent2}
+                                color={Colors.accent3}
                                 onPress={() => resetAndCloseModal()}
                             />
                         </View>
                         <View style={styles.button}>
                             <Button
                                 title="Guardar"
-                                color={Colors.accent2}
+                                color={Colors.accent3}
                                 onPress={() => validateTransaction()}
                             />
                         </View>
@@ -92,7 +108,7 @@ const styles = StyleSheet.create({
         color: Colors.secondary
     },
     description: {
-        width: 200,
+        width: 210,
         height: 60,
         margin: 5,
         textAlign: "center",
@@ -100,7 +116,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         borderRadius: 5,
         backgroundColor: Colors.accent2,
-        color: Colors.accent1,
+        color: Colors.secondary,
     },
     amount: {
         width: 100,
@@ -109,8 +125,17 @@ const styles = StyleSheet.create({
         textAlign: "center",
         borderRadius: 5,
         backgroundColor: Colors.accent2,
-        color: Colors.accent1,
+        color: Colors.secondary,
     },
+    date: {
+        width: 100,
+        height: 40,
+        margin: 5,
+        textAlign: "center",
+        borderRadius: 5,
+        backgroundColor: Colors.accent2,
+        color: Colors.secondary,
+    }, 
     buttonsContainer: {
         width:'100%',
         flexDirection: 'row',
@@ -118,7 +143,7 @@ const styles = StyleSheet.create({
     },
     button: {
         width: 100,
-        marginHorizontal: 10,
+        marginHorizontal: 5,
         marginTop: 10,
     }
 });
