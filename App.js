@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, FlatList, TouchableOpacity, Text, Alert } from 'react-native';
 import Colors from './constants/Colors';
 import { BalanceDisplay } from './components/BalanceDisplay';
 import { TransactionCard } from './components/TransactionCard';
@@ -13,19 +13,33 @@ export default function App() {
 
     const onAddTransaction = (value) => {
         if (value.amount !== 0) {
-            setTransactionList((currentList) => [...currentList, {key: Math.random().toString(), value}]);
+            setTransactionList((currentList) => [...currentList, { key: Math.random().toString(), value }]);
             setBudget(budget + value.amount);
         };
+    };
+
+    const confirmDelete = (item) => {
+        Alert.alert(
+            "¿Eliminar este movimiento?", "",
+            [
+                { text: "Cancelar" },
+                { text: "Confirmar", onPress: () => deleteTransaction(item.key) }
+            ]
+        );
+    };
+
+    const deleteTransaction = (key) => {
+        setTransactionList((transactionList) => transactionList.filter((transaction) => transaction.key !== key));
     };
 
     let addModal = null;
 
     if (addModalVisible) {
         addModal =
-            <AddModal 
+            <AddModal
                 setAddModalVisible={setAddModalVisible}
                 addModalVisible={addModalVisible}
-                onAddTransaction={onAddTransaction} 
+                onAddTransaction={onAddTransaction}
                 currency={currency}
             />
     } else addModal = null
@@ -40,6 +54,7 @@ export default function App() {
                     <TransactionCard
                         item={itemList.item}
                         currency={currency}
+                        confirmDelete={() => confirmDelete(itemList.item)}
                     />
                 )} />
             </View>
@@ -72,23 +87,23 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: '95%',
         paddingBottom: 20
-    }, 
+    },
     list: {
         flex: 1,
         margin: 15
     },
     addButton: {
-        width: 60,  
-        height: 60,   
-        borderRadius: 30,            
-        backgroundColor: Colors.secondary,                                    
-        position: 'absolute',                                          
-        bottom: 20,                                                    
-        right: 20, 
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: Colors.secondary,
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center'
-    }, 
+    },
     addIcon: {
         fontSize: 30
     }

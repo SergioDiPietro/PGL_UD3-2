@@ -1,8 +1,8 @@
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Colors from '../constants/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-export const TransactionCard = ({ item, currency }) => {
+export const TransactionCard = ({ item, currency, confirmDelete }) => {
     const description = item.value.description;
     const amount = item.value.amount;
     const date = item.value.date;
@@ -16,11 +16,11 @@ export const TransactionCard = ({ item, currency }) => {
     if (amount < 0) {
         amountText = styles.negativeAmount;
         icon = <Icon name='leftcircle' style={styles.iconStyle}/>;
-    }
+    };
     
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onLongPress={confirmDelete}>
             <View style={styles.icon}>
                 {icon}
             </View>
@@ -31,9 +31,9 @@ export const TransactionCard = ({ item, currency }) => {
                 <Text style={amountText}>{symbol}{amount}{currency}</Text>
                 <Text style={styles.dateText}>{date}</Text>
             </View>
-        </View>
-    )
-}
+        </TouchableOpacity>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
