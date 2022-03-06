@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         fontSize: 45
     },
     currency: {
-        color: Colors.accent1,
+        color: Colors.secondary,
         fontSize: 15,
         marginLeft: 5
     },

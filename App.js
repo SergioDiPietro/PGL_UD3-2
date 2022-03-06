@@ -7,6 +7,7 @@ import { TransactionCard } from './components/TransactionCard';
 export default function App() {
     const [amount, setAmount] = useState(0);
     const [transactionList, setTransactionList] = useState([]);
+    const [addModalVisible, setAddModalVisible] = useState(false);
 
     return (
         <View style={styles.mainContainer}>
@@ -20,7 +21,7 @@ export default function App() {
                     />
                 )} />
             </View>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton} onPress={() => setAddModalVisible(true)}>
                 <Text style={styles.addIcon}>+</Text>
             </TouchableOpacity>
         </View>
